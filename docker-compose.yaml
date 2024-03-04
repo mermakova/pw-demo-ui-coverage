@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  playwright-demo: 
+    image: playwright-demo
+    build: 
+      context: .
+      dockerfile: ./dockerfile
+    command: npm run chrome
+    volumes:
+      - ./playwright-report/:/app/playwright-report
+      - ./test-results/:/app/test-results
