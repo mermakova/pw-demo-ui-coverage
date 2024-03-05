@@ -16,4 +16,12 @@ export class HelperBase {
         await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     }
 
+    async getBackToLogin() {
+        await this.page.getByText('Back to Log In').click()
+    }
+
+    async navigateToRegistration() {
+        await this.page.getByText('Register').click()
+    }
+
 }

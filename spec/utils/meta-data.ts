@@ -4,6 +4,10 @@ export const TAGS = {
     IoTDashboard: '@IoTDashboard',
     Forms: '@Forms',
     Electricity: '@Electricity',
+    Login: '@Login',
+    Register: '@Register',
+    RequestPassword: '@RequestPassword',
+    ResetPassword: '@ResetPassword',
 
     // Test Priority
     p1: '@Priority_1',
