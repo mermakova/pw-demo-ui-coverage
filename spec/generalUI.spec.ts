@@ -41,7 +41,7 @@ test.describe('App header', {
         }
     })
 
-    test.fixme('User can perform global search', {
+    test('User can perform global search', {
         tag: TAGS.p1,
         annotation: {
             type: 'issue',
