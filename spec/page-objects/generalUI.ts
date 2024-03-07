@@ -121,6 +121,27 @@ export class NavigationPage extends HelperBase{
         await this.page.getByText('Datepicker').click()
     }
 
+    async loginPage(){
+        await this.selectGroupMenuItem('Auth')
+        await this.page.getByText('Login').click()
+    }
+
+    async registerPage(){
+        await this.selectGroupMenuItem('Auth')
+        await this.page.getByText('Register').click()
+    }
+
+    async requestPasswordPage(){
+        await this.selectGroupMenuItem('Auth')
+        await this.page.getByText('Request Password').click()
+    }
+
+    async resetPasswordPage(){
+        await this.selectGroupMenuItem('Auth')
+        await this.page.getByText('Reset Password').click()
+    }
+
+
     private async selectGroupMenuItem(groupItemTitle: string){
         const groupMenuItem = this.page.getByTitle(groupItemTitle)
         const expandedState = await groupMenuItem.getAttribute('aria-expanded')
