@@ -65,9 +65,9 @@ export default defineConfig<TestOptions>({
       },
     },
   ],
-  // webServer: {
-  //   timeout: 5 * 60 * 1000,
-  //   command: 'npm run start',
-  //   url: 'http://localhost:4200/'
-  // }
+  webServer: {
+    timeout: 5 * 60 * 1000,
+    command: 'npm run start',
+    url: 'http://localhost:4200/'
+  }
 });
