@@ -3,7 +3,7 @@ import { TAGS } from './utils/meta-data'
 import { PageManager } from './page-objects/pageManager'
 import { faker } from '@faker-js/faker'
 import { ROUTES } from './utils/routes'
-import { INVALID_PASSWORD, VALID_PASSWORD } from './test-data/auth'
+import { INVALID_PASSWORD, VALID_PASSWORD, USER } from './test-data/auth'
 
 test.beforeEach(async ({page}) => {
     await page.goto('/')
@@ -60,11 +60,16 @@ test.describe('Reset Password', {
         tag: [TAGS.p1],
     }, async ({page}) =>{
         const pm = new PageManager(page)
+        const password = faker.internet.password({length: 35})
+        
         await pm.navigateTo().resetPasswordPage()
         await expect(page).toHaveURL(ROUTES.resetPassword);
         await pm.onResetPasswordPage().checkDefaultState()
-        const password = faker.internet.password({length: 35})
-        await pm.onResetPasswordPage().submitRequestWithValidPassword(password)
+        
+        await pm.onResetPasswordPage().fillNewPassword(password)
+        await pm.onResetPasswordPage().confirmPassword(password)
+        await pm.onResetPasswordPage().checkValidationResult([])
+        await pm.onResetPasswordPage().submitForm()
         await expect(page).toHaveURL(ROUTES.iot);
     })
 
@@ -184,6 +189,7 @@ test.describe('Register', {
             isAgreedToTerms
         )
         await pm.onRegisterPage().checkValidationResult([])
+        await pm.onRegisterPage().submitForm()
     })
 
     test('User can\'t register without filling in the form', {
@@ -276,7 +282,7 @@ test.describe('Register', {
         await pm.onRegisterPage().checkValidationResult(['Password is required!'])
     })
 
-    test('User can\'t register without if the first password and the repeated one doesn\'t match', {
+    test('User can\'t register if the first password and the repeated one doesn\'t match', {
         tag: [TAGS.p1],
         annotation: {
             type: 'issue',
@@ -328,10 +334,99 @@ test.describe('Register', {
             password,
             isAgreedToTerms
         )
-        await pm.onRegisterPage().checkRegisterButton(false)
+        await pm.onRegisterPage().checkSubmitButton(false)
     })
 })
 
 test.describe('Login', {}, () => {
-    
+    test('User can log into existing account saving the session', {
+        tag: [TAGS.p1],
+    }, async ({page}) => {      
+        const pm = new PageManager(page)
+        await pm.navigateTo().loginPage()
+        await expect(page).toHaveURL(ROUTES.login)
+
+        await pm.onLoginPage().checkDefaultState()
+        await pm.onLoginPage().fillFormWithData(
+            USER['Mary'].email,
+            USER['Mary'].password,
+            true
+        )
+        await pm.onLoginPage().checkValidationResult([])
+        await pm.onLoginPage().submitForm()
+    })
+
+    test('User can log into existing account without saving the session', {
+        tag: [TAGS.p1],
+    }, async ({page}) => {      
+        const pm = new PageManager(page)
+        await pm.navigateTo().loginPage()
+        await expect(page).toHaveURL(ROUTES.login)
+
+        await pm.onLoginPage().checkDefaultState()
+        await pm.onLoginPage().fillFormWithData(
+            USER['Mary'].email,
+            USER['Mary'].password,
+            false
+        )
+        await pm.onLoginPage().checkValidationResult([])
+        await pm.onLoginPage().submitForm()
+    })
+
+
+    test('User can navigate to registration form', {
+        tag: [TAGS.p3],
+        annotation: {
+            type: 'issue',
+            description: 'UI bug: form validation fails preventing the click'
+        }
+    }, async ({page}) => {      
+        const pm = new PageManager(page)
+        await pm.navigateTo().loginPage()
+        await expect(page).toHaveURL(ROUTES.login)
+
+        await pm.onLoginPage().navigateToRegistration()
+        await expect(page).toHaveURL(ROUTES.register);
+    })
+
+    test('User can navigate to request password form', {
+        tag: [TAGS.p3],
+    }, async ({page}) => {      
+        const pm = new PageManager(page)
+        await pm.navigateTo().loginPage()
+        await expect(page).toHaveURL(ROUTES.login)
+
+        await pm.onLoginPage().navigateToReequestPassword()
+        await expect(page).toHaveURL(ROUTES.requestPassword);
+    })
+
+    test('User can\'t login without having an account', {
+        tag: [TAGS.p2],
+    }, async ({page}) => {      
+        const pm = new PageManager(page)
+        await pm.navigateTo().loginPage()
+        await expect(page).toHaveURL(ROUTES.login)
+
+        const email = faker.internet.email()
+        const password = faker.internet.password({length: 15})
+        await pm.onLoginPage().fillFormWithData(email, password, false)
+        await pm.onLoginPage().checkValidationResult([])
+        await pm.onLoginPage().submitForm()        
+    })
+
+    test('User can\'t login without filling in the form', {
+        tag: [TAGS.p1],
+    }, async ({page}) => {      
+        const pm = new PageManager(page)
+        await pm.navigateTo().loginPage()
+        await expect(page).toHaveURL(ROUTES.login)
+
+        await pm.onLoginPage().fillFormWithData('','',false)
+        await pm.onRegisterPage().checkValidationResult([
+            'Email is required!',
+            'Password is required!'
+        ])
+        await pm.onLoginPage().checkSubmitButton(false)
+    })
+
 })

@@ -16,8 +16,4 @@ export class RequestPasswordPage extends HelperBase {
         await this.page.getByRole('textbox', {name: 'Email'}).fill(email)
         await this.page.getByRole('button').click()   
     }
-
-    async submitEmptyRequest() {
-
-    }
 }

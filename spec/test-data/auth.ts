@@ -17,3 +17,24 @@ export const PASSWORD_LIST = [
     'csdnSk1heMdOVid0K',
     'ogpxtmjpzoLSYoAFT'
 ]
+
+export const USER = {
+    'Mary': {
+        email: 'eleifend@yahoo.org',
+        password: 'VGYzUnqVaX1Zbljbz'
+    },
+    'Larissa': {
+		email: "ut.quam@aol.edu",
+        password: 'nBeFNEux4dDZpN0FS'
+	},
+    'Lois': {
+		email: "scelerisque@aol.org",
+        password: 'j0DAWtcnyqniBjurA'
+	},
+    'Ian': {
+		email: "donec@aol.com",
+        password: 'ogpxtmjpzoLSYoAFT'
+	},
+}
+
+

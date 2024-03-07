@@ -10,6 +10,7 @@
     "ng": "ng",
     "start": "ng serve",
     "allure": "npx allure generate -c && npx allure serve allure-results",
+    "clearResults": "rm -rf test-results; rm -rf allure-report; rm -rf allure-results", 
     "chrome": "npx playwright test . --project=chromium",
     "iOS": "npx playwright test . --project=iOS"
   },

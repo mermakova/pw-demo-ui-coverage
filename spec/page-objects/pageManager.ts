@@ -4,6 +4,7 @@ import { DatepickerPage } from './datepickerPage'
 import { RequestPasswordPage } from './Auth/RequestPasswordPage'
 import { ResetPasswordPage } from './Auth/ResetPasswordPage'
 import { RegisterPage } from './Auth/RegisterPage'
+import { LoginPage } from './Auth/LoginPage'
 
 
 export class PageManager {
@@ -11,6 +12,7 @@ export class PageManager {
     private page: Page
     private readonly navigationPage: NavigationPage
     private readonly datepickerPage: DatepickerPage
+    private readonly loginrPage: LoginPage
     private readonly requestPasswordPage: RequestPasswordPage
     private readonly resetPasswordPage: ResetPasswordPage
     private readonly registerPage: RegisterPage
@@ -19,6 +21,7 @@ export class PageManager {
         this.page = page
         this.navigationPage = new NavigationPage(this.page)
         this.datepickerPage = new DatepickerPage(this.page)
+        this.loginrPage = new LoginPage(this.page)
         this.requestPasswordPage = new RequestPasswordPage(this.page)
         this.resetPasswordPage = new ResetPasswordPage(this.page)
         this.registerPage = new RegisterPage(this.page)
@@ -42,6 +45,10 @@ export class PageManager {
 
     onRegisterPage(){
         return this.registerPage
+    }
+
+    onLoginPage(){
+        return this.loginrPage
     }
 
 }
